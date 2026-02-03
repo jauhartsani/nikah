@@ -1,0 +1,8 @@
+# Netlify Redirects Configuration
+# File ini harus diletakkan di root folder website Anda
+
+# Allow direct access to cms.html
+/cms.html   /cms.html   200
+
+# Redirect semua path lain ke index.html (untuk SPA routing)
+/*    /index.html   200
