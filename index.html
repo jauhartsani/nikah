@@ -498,6 +498,630 @@
             </div>
         </section>
 
+
+<!-- ============================================ -->
+<!-- WEDDING QUIZ GAME SECTION -->
+<!-- ============================================ -->
+<!-- Paste section ini di index.html Anda -->
+
+<section id="quiz" class="min-h-screen py-20 px-4 relative overflow-hidden bg-gradient-to-br from-bglight via-white to-secondary/30">
+    
+    <!-- Background Decoration -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-10 left-10 w-64 h-64 bg-gold rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto max-w-4xl relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-12 reveal">
+            <div class="inline-block bg-gold/10 px-6 py-2 rounded-full mb-4">
+                <span class="text-gold font-semibold text-sm tracking-wider uppercase">Interactive Game</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-script text-primary mb-4">Seberapa Kenal Kamu?</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Jawab pertanyaan tentang kami dan buktikan kamu adalah teman/keluarga terdekat! 🎮
+            </p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="reveal">
+            
+            <!-- Welcome Screen -->
+            <div id="quiz-welcome" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center">
+                <div class="mb-8">
+                    <div class="w-24 h-24 bg-gradient-to-br from-gold to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                        <i data-lucide="gamepad-2" class="w-12 h-12 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-primary mb-4">Quiz Time!</h3>
+                    <p class="text-gray-600 mb-6">
+                        10 pertanyaan tentang Jauhar & Hasna<br>
+                        <span class="text-gold font-semibold">Siap menjadi yang teratas di leaderboard?</span>
+                    </p>
+                </div>
+
+                <!-- Name Input -->
+                <div class="max-w-md mx-auto mb-8">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 text-left">Nama Kamu</label>
+                    <input 
+                        type="text" 
+                        id="player-name" 
+                        placeholder="Masukkan nama..." 
+                        class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:border-gold focus:ring-4 focus:ring-gold/20 outline-none transition text-center text-lg font-semibold"
+                        maxlength="20"
+                    >
+                </div>
+
+                <button 
+                    onclick="startQuiz()" 
+                    class="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white px-12 py-4 rounded-xl font-bold text-lg transition transform hover:scale-105 shadow-lg"
+                >
+                    🎮 Mulai Quiz!
+                </button>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-3 gap-4 mt-8 max-w-md mx-auto">
+                    <div class="bg-gold/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-gold">10</div>
+                        <div class="text-xs text-gray-600">Pertanyaan</div>
+                    </div>
+                    <div class="bg-primary/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-primary">10</div>
+                        <div class="text-xs text-gray-600">Poin/Benar</div>
+                    </div>
+                    <div class="bg-accent/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-accent">∞</div>
+                        <div class="text-xs text-gray-600">Unlimited</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Game Screen -->
+            <div id="quiz-game" class="hidden">
+                
+                <!-- Progress Bar -->
+                <div class="bg-white rounded-3xl shadow-xl p-6 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-gray-600">Pertanyaan <span id="current-question">1</span> / 10</span>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="clock" class="w-4 h-4 text-gold"></i>
+                            <span class="text-sm font-bold text-gold"><span id="timer">0</span>s</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div id="progress-bar" class="bg-gradient-to-r from-gold to-yellow-600 h-full transition-all duration-500" style="width: 10%"></div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-6">
+                    
+                    <!-- Question -->
+                    <div class="mb-8">
+                        <div class="text-center mb-6">
+                            <span class="inline-block bg-gold/10 text-gold px-4 py-2 rounded-full text-sm font-semibold">
+                                <i data-lucide="help-circle" class="w-4 h-4 inline mr-1"></i>
+                                <span id="difficulty-badge">Easy</span>
+                            </span>
+                        </div>
+                        <h3 id="question-text" class="text-2xl md:text-3xl font-bold text-primary text-center leading-relaxed">
+                            Loading question...
+                        </h3>
+                    </div>
+
+                    <!-- Options -->
+                    <div id="quiz-options" class="space-y-4">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Score Display -->
+                <div class="bg-gradient-to-r from-primary to-accent rounded-2xl p-6 text-white text-center">
+                    <div class="flex items-center justify-center gap-8">
+                        <div>
+                            <div class="text-sm opacity-90">Skor</div>
+                            <div class="text-3xl font-bold"><span id="current-score">0</span></div>
+                        </div>
+                        <div class="w-px h-12 bg-white/30"></div>
+                        <div>
+                            <div class="text-sm opacity-90">Benar</div>
+                            <div class="text-3xl font-bold"><span id="correct-count">0</span> / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="quiz-result" class="hidden bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center">
+                
+                <!-- Confetti Animation Container -->
+                <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl"></div>
+
+                <div class="relative z-10">
+                    <!-- Trophy Icon -->
+                    <div id="trophy-icon" class="w-32 h-32 mx-auto mb-6 animate-bounce">
+                        <i data-lucide="trophy" class="w-full h-full text-gold"></i>
+                    </div>
+
+                    <!-- Result Message -->
+                    <h3 id="result-title" class="text-4xl font-bold text-primary mb-4">Selamat!</h3>
+                    <p id="result-message" class="text-gray-600 mb-8 text-lg">
+                        Kamu berhasil menyelesaikan quiz!
+                    </p>
+
+                    <!-- Final Score -->
+                    <div class="bg-gradient-to-br from-gold/20 to-yellow-100 rounded-2xl p-8 mb-8 max-w-md mx-auto">
+                        <div class="text-6xl font-bold text-gold mb-2"><span id="final-score">0</span></div>
+                        <div class="text-gray-600 font-semibold">Total Skor</div>
+                        <div class="mt-4 pt-4 border-t border-gold/30">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <div class="text-2xl font-bold text-primary"><span id="final-correct">0</span>/10</div>
+                                    <div class="text-gray-600">Jawaban Benar</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-accent"><span id="final-time">0</span>s</div>
+                                    <div class="text-gray-600">Waktu</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Badge -->
+                    <div id="performance-badge" class="inline-block bg-gold px-6 py-3 rounded-full text-white font-bold text-lg mb-8">
+                        🏆 Master Quiz!
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button 
+                            onclick="restartQuiz()" 
+                            class="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2"
+                        >
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                            Main Lagi
+                        </button>
+                        <button 
+                            onclick="showLeaderboard()" 
+                            class="bg-gold hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2"
+                        >
+                            <i data-lucide="trophy" class="w-5 h-5"></i>
+                            Lihat Leaderboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div id="quiz-leaderboard" class="hidden bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="trophy" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-primary mb-2">Leaderboard</h3>
+                    <p class="text-gray-600">Top 10 Pemain Terbaik</p>
+                </div>
+
+                <!-- Leaderboard List -->
+                <div id="leaderboard-list" class="space-y-3 mb-8">
+                    <!-- Will be populated by JS -->
+                    <div class="text-center py-8">
+                        <div class="spinner mx-auto mb-4"></div>
+                        <p class="text-gray-500">Memuat leaderboard...</p>
+                    </div>
+                </div>
+
+                <button 
+                    onclick="backToWelcome()" 
+                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 px-8 py-4 rounded-xl font-bold transition"
+                >
+                    Kembali
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+    <!-- ============================================ -->
+    <!-- QUIZ JAVASCRIPT -->
+    <!-- ============================================ -->
+    <script>
+    // Quiz Data (HARDCODED - Edit sesuai kebutuhan)
+    const quizQuestions = [
+        {
+            question: "Dimana Jauhar dan Hasna pertama kali bertemu?",
+            options: ["Di SMA", "Di cafe", "Di pesta teman", "Di jalan"],
+            correct: 0, // index jawaban benar (0 = opsi pertama)
+            difficulty: "easy"
+        },
+        {
+            question: "Makanan favorit Jauhar adalah?",
+            options: ["Nasi goreng", "Sate", "Nasi Padang", "Bakso"],
+            correct: 2,
+            difficulty: "easy"
+        },
+        {
+            question: "Warna favorit Hasna?",
+            options: ["Merah", "Biru", "Pink", "Ungu"],
+            correct: 1,
+            difficulty: "easy"
+        },
+        {
+            question: "Tanggal berapa mereka jadian?",
+            options: ["14 Februari 2021", "21 Januari 2024", "12 Desember 2020", "17 Agustus 2021"],
+            correct: 1,
+            difficulty: "medium"
+        },
+        {
+            question: "Rumah Jauhar Dimana?",
+            options: ["Nganjuk", "Kediri", "Surabaya", "Malang"],
+            correct: 0,
+            difficulty: "easy"
+        },
+        {
+            question: "Rumah Nita Dimana?",
+            options: ["Surabaya", "Kediri", "Lamongan", "Malang"],
+            correct: 2,
+            difficulty: "medium"
+        },
+        {
+            question: "Berapa lama mereka berpacaran sebelum menikah?",
+            options: ["2 tahun", "3 tahun", "4 tahun", "5 tahun"],
+            correct: 0,
+            difficulty: "medium"
+        },
+        {
+            question: "Siapa yang banyak omong?",
+            options: ["Nita", "Jauhar", "Jauhar & Nita", "Pendiam Semua"],
+            correct: 0,
+            difficulty: "easy"
+        },
+        {
+            question: "Lagu yang merepresentasikan kita?",
+            options: ["Sudden Shower ", "Perfect", "Marry You", "Thinking Out Loud"],
+            correct: 0,
+            difficulty: "hard"
+        },
+        {
+            question: "Pernah LDR antar kota apa mereka?",
+            options: ["JKT-BDG", "SUB-MLG", "JKT-SUB", "BDG-BLI"],
+            correct: 2,
+            difficulty: "hard"
+        }
+    ];
+
+    // Quiz State
+    let currentQuestion = 0;
+    let score = 0;
+    let correctAnswers = 0;
+    let playerName = '';
+    let startTime = null;
+    let timerInterval = null;
+
+    // Start Quiz
+    function startQuiz() {
+        playerName = document.getElementById('player-name').value.trim();
+        
+        if (!playerName) {
+            alert('Masukkan nama kamu dulu!');
+            return;
+        }
+        
+        // Reset state
+        currentQuestion = 0;
+        score = 0;
+        correctAnswers = 0;
+        startTime = Date.now();
+        
+        // Start timer
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        // Show game screen
+        document.getElementById('quiz-welcome').classList.add('hidden');
+        document.getElementById('quiz-game').classList.remove('hidden');
+        
+        // Load first question
+        loadQuestion();
+        
+        lucide.createIcons();
+    }
+
+    // Update Timer
+    function updateTimer() {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('timer').textContent = elapsed;
+    }
+
+    // Load Question
+    function loadQuestion() {
+        if (currentQuestion >= quizQuestions.length) {
+            endQuiz();
+            return;
+        }
+        
+        const q = quizQuestions[currentQuestion];
+        
+        // Update progress
+        document.getElementById('current-question').textContent = currentQuestion + 1;
+        const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        
+        // Update question
+        document.getElementById('question-text').textContent = q.question;
+        document.getElementById('difficulty-badge').textContent = q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1);
+        
+        // Create options
+        const optionsContainer = document.getElementById('quiz-options');
+        optionsContainer.innerHTML = '';
+        
+        q.options.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option w-full px-6 py-4 bg-gray-50 hover:bg-gold/10 border-2 border-gray-200 hover:border-gold rounded-xl text-left font-semibold transition transform hover:scale-105 hover:shadow-lg';
+            btn.innerHTML = `
+                <span class="inline-flex items-center justify-center w-8 h-8 bg-white rounded-full mr-3 text-sm font-bold text-gray-700">
+                    ${String.fromCharCode(65 + index)}
+                </span>
+                ${option}
+            `;
+            btn.onclick = () => selectAnswer(index, btn);
+            optionsContainer.appendChild(btn);
+        });
+        
+        lucide.createIcons();
+    }
+
+    // Select Answer
+    function selectAnswer(selected, button) {
+        const q = quizQuestions[currentQuestion];
+        const isCorrect = selected === q.correct;
+        
+        // Disable all buttons
+        const allButtons = document.querySelectorAll('.quiz-option');
+        allButtons.forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('hover:bg-gold/10', 'hover:border-gold', 'hover:scale-105');
+        });
+        
+        // Show correct/wrong
+        if (isCorrect) {
+            button.classList.add('!bg-green-100', '!border-green-500');
+            button.innerHTML += '<span class="ml-auto">✅</span>';
+            score += 10;
+            correctAnswers++;
+            
+            // Confetti effect
+            createMiniConfetti(button);
+        } else {
+            button.classList.add('!bg-red-100', '!border-red-500');
+            button.innerHTML += '<span class="ml-auto">❌</span>';
+            
+            // Show correct answer
+            allButtons[q.correct].classList.add('!bg-green-100', '!border-green-500');
+            allButtons[q.correct].innerHTML += '<span class="ml-auto">✅ Jawaban Benar</span>';
+        }
+        
+        // Update score display
+        document.getElementById('current-score').textContent = score;
+        document.getElementById('correct-count').textContent = correctAnswers;
+        
+        // Next question after delay
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 2000);
+    }
+
+    // End Quiz
+    function endQuiz() {
+        clearInterval(timerInterval);
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        
+        // Hide game, show result
+        document.getElementById('quiz-game').classList.add('hidden');
+        document.getElementById('quiz-result').classList.remove('hidden');
+        
+        // Update result
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('final-correct').textContent = correctAnswers;
+        document.getElementById('final-time').textContent = timeTaken;
+        
+        // Performance message
+        let title, message, badge;
+        if (correctAnswers === 10) {
+            title = "Perfect Score! 🎉";
+            message = "Kamu benar-benar kenal Jauhar & Hasna!";
+            badge = "🏆 Perfect Master!";
+            createConfetti();
+        } else if (correctAnswers >= 7) {
+            title = "Luar Biasa! 🌟";
+            message = "Kamu teman dekat mereka ya?";
+            badge = "⭐ Quiz Master!";
+        } else if (correctAnswers >= 5) {
+            title = "Bagus! 👍";
+            message = "Lumayan kenal nih!";
+            badge = "👏 Good Job!";
+        } else {
+            title = "Nice Try! 💪";
+            message = "Semoga makin kenal sama mereka!";
+            badge = "🎮 Keep Playing!";
+        }
+        
+        document.getElementById('result-title').textContent = title;
+        document.getElementById('result-message').textContent = message;
+        document.getElementById('performance-badge').textContent = badge;
+        
+        // Save to leaderboard
+        saveToLeaderboard(playerName, score, correctAnswers, timeTaken);
+        
+        lucide.createIcons();
+    }
+
+    // Save to Supabase Leaderboard
+    async function saveToLeaderboard(name, totalScore, correct, time) {
+        try {
+            const { error } = await supabase
+                .from('quiz_leaderboard')
+                .insert([{
+                    player_name: name,
+                    total_score: totalScore,
+                    correct_answers: correct,
+                    total_questions: quizQuestions.length,
+                    time_taken: time
+                }]);
+            
+            if (error) throw error;
+            console.log('✅ Score saved to leaderboard!');
+        } catch (error) {
+            console.error('Error saving score:', error);
+        }
+    }
+
+    // Show Leaderboard
+    async function showLeaderboard() {
+        document.getElementById('quiz-result').classList.add('hidden');
+        document.getElementById('quiz-leaderboard').classList.remove('hidden');
+        
+        try {
+            const { data, error } = await supabase
+                .from('quiz_leaderboard')
+                .select('*')
+                .order('total_score', { ascending: false })
+                .order('time_taken', { ascending: true })
+                .limit(10);
+            
+            if (error) throw error;
+            
+            const container = document.getElementById('leaderboard-list');
+            
+            if (data && data.length > 0) {
+                container.innerHTML = data.map((player, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+                    const bgColor = index === 0 ? 'bg-gradient-to-r from-gold/20 to-yellow-100' : 
+                                index === 1 ? 'bg-gray-100' :
+                                index === 2 ? 'bg-orange-50' : 'bg-white';
+                    
+                    return `
+                        <div class="${bgColor} rounded-xl p-4 flex items-center justify-between border-2 ${index < 3 ? 'border-gold/30' : 'border-gray-200'}">
+                            <div class="flex items-center gap-4">
+                                <div class="text-2xl font-bold w-12 text-center">${medal}</div>
+                                <div>
+                                    <div class="font-bold text-gray-800">${player.player_name}</div>
+                                    <div class="text-sm text-gray-600">${player.correct_answers}/10 benar • ${player.time_taken}s</div>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-gold">${player.total_score}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                container.innerHTML = '<p class="text-center text-gray-500 py-8">Belum ada pemain</p>';
+            }
+        } catch (error) {
+            console.error('Error loading leaderboard:', error);
+            document.getElementById('leaderboard-list').innerHTML = '<p class="text-center text-red-500 py-8">Gagal memuat leaderboard</p>';
+        }
+        
+        lucide.createIcons();
+    }
+
+    // Restart Quiz
+    function restartQuiz() {
+        document.getElementById('quiz-result').classList.add('hidden');
+        document.getElementById('quiz-welcome').classList.remove('hidden');
+        document.getElementById('player-name').value = playerName; // Keep name
+        lucide.createIcons();
+    }
+
+    // Back to Welcome
+    function backToWelcome() {
+        document.getElementById('quiz-leaderboard').classList.add('hidden');
+        document.getElementById('quiz-welcome').classList.remove('hidden');
+        lucide.createIcons();
+    }
+
+    // Confetti Effect (Full Screen)
+    function createConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#C5A059', '#5D4037', '#D7CCC8', '#8D6E63'];
+        
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: absolute;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    opacity: 1;
+                    transform: rotate(${Math.random() * 360}deg);
+                    animation: confetti-fall ${2 + Math.random() * 2}s linear forwards;
+                `;
+                container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 4000);
+            }, i * 30);
+        }
+    }
+
+    // Mini Confetti (for correct answer)
+    function createMiniConfetti(element) {
+        const rect = element.getBoundingClientRect();
+        const colors = ['#10B981', '#34D399', '#6EE7B7'];
+        
+        for (let i = 0; i < 10; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                border-radius: 50%;
+                left: ${rect.left + rect.width / 2}px;
+                top: ${rect.top + rect.height / 2}px;
+                pointer-events: none;
+                animation: particle-burst 0.6s ease-out forwards;
+            `;
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 600);
+        }
+    }
+
+    // CSS Animations (add to <style> tag)
+    const quizStyles = document.createElement('style');
+    quizStyles.textContent = `
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes particle-burst {
+            to {
+                transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .quiz-option {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .quiz-option:disabled {
+            cursor: not-allowed;
+        }
+    `;
+    document.head.appendChild(quizStyles);
+    </script>
+
+
         <!-- 7. WEDDING GIFT -->
         <section id="gift" class="py-16 px-6 bg-gradient-to-b from-bglight to-secondary/30 text-center">
             <div class="reveal mb-10">
